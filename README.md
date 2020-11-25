@@ -7,6 +7,7 @@ These 2 values are in the first lines of each files, called "bytes_total" and "b
 
 Encode file also needs you to specify the mode which will be used.
 There are 2 modes :
+
   1 - Decimal Input, which takes a decimal number on run, int or float, no matter
   
   2 - Binary Input, which takes a binary number on run, either int or float, negative or positive,...
