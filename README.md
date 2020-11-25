@@ -1,6 +1,5 @@
 # ieee754_converter
-Simple IEEE754 Convert in Python
-One file for encoding, one file for decoding
+Simple IEEE754 Convert in Python / One file for encoding, one file for decoding
 
 In both files, you need to specify the total number of bytes, and number of bytes dedicated to exponent
 
