@@ -18,6 +18,12 @@ There are 2 modes :
  
  Decode file only has one mode, it just takes one IEEE754 binary on run
  
+ Denormalized value :
+ Only decoding support denormalized values at the moment
+ You need to specify either if the variable called "denorm" is True or False, at the beginning of the file
+ - True for denormalized
+ - False for normalized
+ 
  Thanks.
  
  ////// FR ReadME
@@ -36,6 +42,12 @@ There are 2 modes :
  Il faut juste choisir le mode en modifiant la variable "mode" se trouvant elle aussi au début du fichier
  
  Le fichier de décodage n'a qu'un mode, et ne demande que d'entrer le nombre sous la forme IEEE754 lors du lancement du programme
+ 
+ Valeur dénormalisée :
+ Les valeurs dénormalisées ne sont supportés que pour le décodage pour le moment
+ Il faut spécifier l'état du booléen au début du fichier, "True" ou "False"
+ - True pour dénormalisé
+ - False pour normalisé
  
  Merci.
  
