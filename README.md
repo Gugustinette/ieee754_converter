@@ -1,5 +1,5 @@
 # ieee754_converter
-Simple IEEE754 Convert in Python / One file for encoding, one file for decoding
+Simple IEEE754 Converter in Python / One file for encoding, one file for decoding
 
 ////// EN ReadME
 
