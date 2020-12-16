@@ -1,44 +1,44 @@
 # Init
-# IEEE754 Converter - Decode / FR
+# IEEE754 Converter - Encode / EN
 # Author : Augustin MERCIER "Gugustinette"
 
-#   Changement du mode
-#   1 = Entrée Décimale
-#   2 = Entrée Binaire
+#   Mode Set
+#   1 = Decimal Input
+#   2 = Binary Input
 mode = 1
 
-#   Mode dénormalisée
-#   True : Activé
-#   False : Désactivé
+#   Denormalized mode
+#   True : On
+#   False : Off
 
-denorm = False
+denorm = True
 
-#   Réglages du nombre de bits
-#   bytes_total : nombre total de bits
-#   bytes_expo : nombre de bits dédiés à l'exposant
+#   Number of bytes settings
+#   bytes_total : total number of bytes
+#   bytes_expo : number of bytes dedicated to exponent
 
 bytes_total = 32
 bytes_expo = 8
 
-# CODE / NE PAS TOUCHER
+# CODE / DO NOT TOUCH
 bytes_mantisse = bytes_total - bytes_expo - 1
 
 expo_value = 0
 
-def GetIntAtIndex(nb, i) : # Renvoie le chiffre à l'index i de la valeur nb (entrée : décimal, décimal / sortie : décimal)
+def GetIntAtIndex(nb, i) : # Return digit number i of a given value (input : decimal / output : decimal)
     x = nb % 10**i
     x -= nb % 10**(i - 1)
     x = x / 10**(i - 1)
     return x
 
-def LenInt(nb) : # Renvoie la longueur d'un entier (entrée : décimal / sortie : décimal)
+def LenInt(nb) : # Return the len of a given number as int (input : decimal / output : decimal)
     x = 0
     while nb > 0 :
         nb = nb // 10
         x += 1
     return x
 
-def ToBinaryDecimal(nb_input) : # Renvoie la forme binaire d'un entier ou flottant (entrée : décimal / sortie : string)
+def ToBinaryDecimal(nb_input) : # Return the binary form of a given value (input : decimal / output : string)
     global x
     binary_nb = ""
     nb = nb_input
@@ -56,7 +56,7 @@ def ToBinaryDecimal(nb_input) : # Renvoie la forme binaire d'un entier ou flotta
                 binary_nb = binary_nb + "0"
     return binary_nb
 
-def ToDecimalBinary(bin_input) : # Renvoie la forme décimale d'un nombre binaire (entrée : string / sortie : décimal)
+def ToDecimalBinary(bin_input) : # Return the value of a given binary (input : string / output : decimal)
     y = 0
     if bin_input[0] == "-" :
         sign = -1
@@ -78,13 +78,13 @@ def ToDecimalBinary(bin_input) : # Renvoie la forme décimale d'un nombre binair
     y = y * sign
     return y
 
-def SignOf(bin_input) : # Renvoie le bit de signe d'un nombre binaire (entrée : string / sortie : int)
+def SignOf(bin_input) : # Return the sign bit of a binary number (input : string / output : decimal)
     if bin_input[0] == "-" :
         return bin_input.replace("-", ""), 1
     else :
         return bin_input, 0
 
-def DeleteZeroOf(bin_input) : # Supprime les 0 inutiles au début d'un nombre binaire (entrée : string / sortie : string)
+def DeleteZeroOf(bin_input) : # Delete useless zeros at the beginning of a binary (input : string / output : string)
     index = 0
     new_bin_x = ""
     while bin_input[index] == "0" :
@@ -93,7 +93,7 @@ def DeleteZeroOf(bin_input) : # Supprime les 0 inutiles au début d'un nombre bi
         new_bin_x = new_bin_x + bin_input[n]
     return new_bin_x
 
-def ExponantOf(bin_input) : # Renvoie l'exposant IEEE754 d'un nombre binaire (entrée : string / sortie : string)
+def ExponantOf(bin_input) : # Return the IEEE754 exponent of a given binary (input : string / output : string)
     global bytes_expo, expo_value
     expo = 0
     if bin_input[0] == "." :
@@ -114,7 +114,7 @@ def ExponantOf(bin_input) : # Renvoie l'exposant IEEE754 d'un nombre binaire (en
         expo_str = "0" + expo_str
     return expo_str
 
-def Denorm_Exponant() : # Renvoie l'exposant dénormalisée
+def Denorm_Exponant() : # Return denormalized exponant
     global bytes_expo, expo_value
     expo = ""
     for i in range(bytes_expo) :
@@ -122,8 +122,8 @@ def Denorm_Exponant() : # Renvoie l'exposant dénormalisée
     expo_value = 1 - (2**(bytes_expo - 1) - 1)
     return expo
 
-def MantisseOf(bin_input) : # Renvoie la mantisse du nombre binaire donné (entrée : string / sortie : string)
-    global bytes_mantisse, x, expo_value, denorm
+def MantisseOf(bin_input) : # Return the IEEE754 mantisse of a given binary (input : string / output : string)
+    global bytes_mantisse, x, expo_value
     temp_x = abs(x)
     mantisse = ""
     if bin_input[0] == "." or denorm :
@@ -159,7 +159,7 @@ def MantisseOf(bin_input) : # Renvoie la mantisse du nombre binaire donné (entr
         mantisse = mantisse + "0"
     return mantisse
 
-def ValueFromInput(str_input) : # Renvoie la valeur donné en entrée de la forme "6.35E-39"
+def ValueFromInput(str_input) : # Return given value of form "6.35E-39"
     for i in range(len(str_input)) :
         if str_input[i] == "E" or str_input[i] == "e" :
             power_pos = i
@@ -168,14 +168,14 @@ def ValueFromInput(str_input) : # Renvoie la valeur donné en entrée de la form
     final_value = float(str_input[0:power_pos]) * (10 ** -power_value)
     return final_value
 
-if mode == 1 : # Entrée sous forme de décimal
+if mode == 1 : # Decimal Input
     if denorm :
-        str_input_x = str(input("Entrer valeur décimal (dénormalisée, ex : 6.35e-39) : "))
+        str_input_x = str(input("Enter decimal value (denormalized, ex : 6.35e-39) : "))
         x = ValueFromInput(str_input_x)
     else :
-        x = float(input("Entrer valeur décimal (entier ou flottant) : "))
+        x = float(input("Enter decimal value (int or float) : "))
 
-    print("Valeur décimale : " + str(x))
+    print("Decimal value : " + str(x))
 
     if x > 0 :
         sign_x = 0
@@ -190,8 +190,8 @@ if mode == 1 : # Entrée sous forme de décimal
 
     bin_x = bin_x.replace("-", "")
 else :
-    if mode == 2 : # Entrée sous forme binaire
-        bin_x = str(input("Entrer une valeur binaire avec le bon format : 10.01 / -10.01 / 0.01 / .01 / -0.01 / -.01 /... : "))
+    if mode == 2 : # Binary Input
+        bin_x = str(input("Enter binary as expected format : 10.01 / -10.01 / 0.01 / .01 / -0.01 / -.01 /... : "))
 
         print(bin_x)
 
@@ -199,16 +199,16 @@ else :
 
         x = ToDecimalBinary(bin_x)
 
-        print("Valeur décimale : " + str(x))
+        print("Decimal value : " + str(x))
 
         bin_x, sign_x = SignOf(bin_x)
 
 if sign_x == 1 :
-    print("Valeur binaire : -" + bin_x)
+    print("Binary value : -" + bin_x)
 else :
-    print("Valeur binaire : " + bin_x)
+    print("Binary value : " + bin_x)
 
-print("Valeur binaire absolue : " + bin_x)
+print("Absolute binary value : " + bin_x)
 
 if denorm :
     expo_x = Denorm_Exponant()
@@ -217,22 +217,22 @@ else :
 
 mant_x = MantisseOf(bin_x)
 
-print("Bit de signe : " + str(sign_x))
+print("Sign bit : " + str(sign_x))
 
-print("Valeur de l'exposant : " + str(expo_value))
+print("Exponent value : " + str(expo_value))
 
-print("Bits d'exposant : " + expo_x)
+print("Exponent bits : " + expo_x)
 
 if denorm :
-    print("Valeur de la mantisse : " + "0." + mant_x)
+    print("Mantisse value : " + "0." + mant_x)
 else :
-    print("Valeur de la mantisse : " + "1." + mant_x)
+    print("Mantisse value : " + "1." + mant_x)
 
-print("Bits de mantisse : " + mant_x)
+print("Mantisse bits : " + mant_x)
 
 print("")
 
-print("Forme Binaire IEEE754 du nombre :")
+print("IEEE754 Binary of Number : ")
 
 print(str(sign_x) + "  /  " + expo_x + "  /  " + mant_x)
 
