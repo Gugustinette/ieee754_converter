@@ -7,14 +7,18 @@
 #   2 = Entrée Binaire
 mode = 1
 
+#   Mode dénormalisée
+#   True : Activé
+#   False : Désactivé
+
+denorm = False
+
 #   Réglages du nombre de bits
 #   bytes_total : nombre total de bits
 #   bytes_expo : nombre de bits dédiés à l'exposant
 
-bytes_total = 16
-bytes_expo = 5
-
-
+bytes_total = 32
+bytes_expo = 8
 
 # CODE / NE PAS TOUCHER
 bytes_mantisse = bytes_total - bytes_expo - 1
@@ -110,22 +114,43 @@ def ExponantOf(bin_input) : # Renvoie l'exposant IEEE754 d'un nombre binaire (en
         expo_str = "0" + expo_str
     return expo_str
 
+def Denorm_Exponant() : # Renvoie l'exposant dénormalisée
+    global bytes_expo, expo_value
+    expo = ""
+    for i in range(bytes_expo) :
+        expo += "0"
+    expo_value = 1 - (2**(bytes_expo - 1) - 1)
+    return expo
+
 def MantisseOf(bin_input) : # Renvoie la mantisse du nombre binaire donné (entrée : string / sortie : string)
-    global bytes_mantisse, x, expo_value
+    global bytes_mantisse, x, expo_value, denorm
     temp_x = abs(x)
     mantisse = ""
-    if bin_input[0] == "." :
-        i = (2**expo_value)
-        power = 1
-        if (i == 2**-power) :
-            power = 2
-        while i != temp_x :
-            if i + (2**-power) > temp_x :
-                mantisse = mantisse + "0"
-            else :
-                mantisse = mantisse + "1"
-                i += (2**-power)
-            power += 1
+    if bin_input[0] == "." or denorm :
+        if denorm :
+            i = 0
+            power = abs(expo_value) + 1
+            if temp_x == 2**expo_value :
+                i = temp_x
+            while i != temp_x :
+                if i + (2**-power) > temp_x :
+                    mantisse = mantisse + "0"
+                else :
+                    mantisse = mantisse + "1"
+                    i += (2**-power)
+                power += 1
+        else :
+            i = (2**expo_value)
+            power = 1
+            if (i == 2**-power) :
+                power = 2
+            while i != temp_x :
+                if i + (2**-power) > temp_x :
+                    mantisse = mantisse + "0"
+                else :
+                    mantisse = mantisse + "1"
+                    i += (2**-power)
+                power += 1
     else :
         bin_input = bin_input.replace(".", "")
         for i in range(1, len(bin_input)) :
@@ -134,8 +159,21 @@ def MantisseOf(bin_input) : # Renvoie la mantisse du nombre binaire donné (entr
         mantisse = mantisse + "0"
     return mantisse
 
+def ValueFromInput(str_input) : # Renvoie la valeur donné en entrée de la forme "6.35E-39"
+    for i in range(len(str_input)) :
+        if str_input[i] == "E" or str_input[i] == "e" :
+            power_pos = i
+            i = len(str_input)
+    power_value = int(str_input[power_pos + 2:])
+    final_value = float(str_input[0:power_pos]) * (10 ** -power_value)
+    return final_value
+
 if mode == 1 : # Entrée sous forme de décimal
-    x = float(input("Entrer valeur décimal (entier ou flottant) : "))
+    if denorm :
+        str_input_x = str(input("Entrer valeur décimal (dénormalisée, ex : 6.35e-39) : "))
+        x = ValueFromInput(str_input_x)
+    else :
+        x = float(input("Entrer valeur décimal (entier ou flottant) : "))
 
     print("Valeur décimale : " + str(x))
 
@@ -172,7 +210,10 @@ else :
 
 print("Valeur binaire absolue : " + bin_x)
 
-expo_x = ExponantOf(bin_x)
+if denorm :
+    expo_x = Denorm_Exponant()
+else :
+    expo_x = ExponantOf(bin_x)
 
 mant_x = MantisseOf(bin_x)
 
@@ -182,7 +223,10 @@ print("Valeur de l'exposant : " + str(expo_value))
 
 print("Bits d'exposant : " + expo_x)
 
-print("Valeur de la mantisse : " + "1." + mant_x)
+if denorm :
+    print("Valeur de la mantisse : " + "0." + mant_x)
+else :
+    print("Valeur de la mantisse : " + "1." + mant_x)
 
 print("Bits de mantisse : " + mant_x)
 
