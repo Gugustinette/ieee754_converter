@@ -22,11 +22,13 @@ There are 2 modes :
  
  For encoding :
  Denormalized encoding only support binary input at the moment, do not try to use the decimal input with this mode
+ 
  You need to specify either if the variable called "denorm" is True or False, at the beginning of the file
  - True for denormalized
  - False for normalized
 
  For decoding :
+ 
  You need to specify either if the variable called "denorm" is True or False, at the beginning of the file
  - True for denormalized
  - False for normalized
@@ -54,11 +56,13 @@ There are 2 modes :
  
  Pour l'encodage :
  L'encodage dénormalisé n'est supporté qu'avec l'entrée d'une valeur binaire pour le moment, n'essayez pas d'utiliser l'entrée décimale avec ce mode
+ 
  Il faut spécifier l'état du booléen au début du fichier, "True" ou "False"
  - True pour dénormalisé
  - False pour normalisé
  
  Pour le décodage :
+ 
  Il faut spécifier l'état du booléen au début du fichier, "True" ou "False"
  - True pour dénormalisé
  - False pour normalisé
