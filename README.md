@@ -1,7 +1,7 @@
 # ieee754_converter
 Simple IEEE754 Converter in Python / One file for encoding, one file for decoding
 
-////// EN ReadME
+# EN ReadME
 
 In both files, you need to specify the total number of bytes, and number of bytes dedicated to exponent
 
@@ -18,16 +18,16 @@ There are 2 modes :
  
  Decode file only has one mode, it just takes one IEEE754 binary on run
  
- Denormalized value :
+ ## Denormalized value :
  
- For encoding :
+ ### For encoding :
  Denormalized encoding only support binary input at the moment, do not try to use the decimal input with this mode
  
  You need to specify either if the variable called "denorm" is True or False, at the beginning of the file
  - True for denormalized
  - False for normalized
 
- For decoding :
+ ### For decoding :
  
  You need to specify either if the variable called "denorm" is True or False, at the beginning of the file
  - True for denormalized
@@ -35,7 +35,7 @@ There are 2 modes :
  
  Thanks.
  
- ////// FR ReadME
+ # FR ReadME
  
  Les deux fichiers nécessitent de spécifier le nombre total de bits ainsi que le nombre de bits dédiés à l'exposant
  
@@ -52,16 +52,16 @@ There are 2 modes :
  
  Le fichier de décodage n'a qu'un mode, et ne demande que d'entrer le nombre sous la forme IEEE754 lors du lancement du programme
  
- Valeur dénormalisée :
+ ## Valeur dénormalisée :
  
- Pour l'encodage :
+ ### Pour l'encodage :
  L'encodage dénormalisé n'est supporté qu'avec l'entrée d'une valeur binaire pour le moment, n'essayez pas d'utiliser l'entrée décimale avec ce mode
  
  Il faut spécifier l'état du booléen au début du fichier, "True" ou "False"
  - True pour dénormalisé
  - False pour normalisé
  
- Pour le décodage :
+ ### Pour le décodage :
  
  Il faut spécifier l'état du booléen au début du fichier, "True" ou "False"
  - True pour dénormalisé
